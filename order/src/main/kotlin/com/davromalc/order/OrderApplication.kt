@@ -1,12 +1,15 @@
 package com.davromalc.order
 
-import org.springframework.boot.autoconfigure.SpringBootApplication
-import org.springframework.boot.runApplication
 
-@SpringBootApplication
-class OrderApplication
+import com.davromalc.order.properties.OrderProperties
+import org.springframework.fu.kofu.application
+
+val app = application {
+	configurationProperties<OrderProperties>("order")
+	enable(appConfig)
+}
 
 fun main(args: Array<String>) {
-	runApplication<DemoApplication>(*args)
+	app.run()
 }
 
