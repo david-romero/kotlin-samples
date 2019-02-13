@@ -1,12 +1,14 @@
 package com.davromalc.checkout
 
-import org.springframework.boot.autoconfigure.SpringBootApplication
-import org.springframework.boot.runApplication
+import com.davromalc.checkout.properties.CheckoutProperties
+import org.springframework.fu.kofu.webApplication
 
-@SpringBootApplication
-class CheckoutApplication
+val app = webApplication {
+    configurationProperties<CheckoutProperties>("checkout")
+    enable(appConfig)
+}
 
 fun main(args: Array<String>) {
-	runApplication<DemoApplication>(*args)
+    app.run()
 }
 
