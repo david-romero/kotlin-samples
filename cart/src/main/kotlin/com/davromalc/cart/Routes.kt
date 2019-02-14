@@ -9,6 +9,7 @@ fun routes(cartHandler: CartHandler) =
                     .nest {
                         GET("/{id}", cartHandler::findOne)
                         GET("/", cartHandler::findAll)
+                        POST("/", cartHandler::create)
                     }
             ("/api/cart/item" and accept(APPLICATION_JSON))
                     .nest {
