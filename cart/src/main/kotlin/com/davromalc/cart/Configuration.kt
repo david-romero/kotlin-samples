@@ -12,9 +12,7 @@ val appConfig = configuration {
         bean<CartHandler>()
         bean(::routes)
     }
-    mongodb {
-        embedded()
-    }
+    mongodb()
     server {
         port = 8080
         codecs {

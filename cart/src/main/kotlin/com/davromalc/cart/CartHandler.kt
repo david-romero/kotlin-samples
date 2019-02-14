@@ -1,12 +1,15 @@
 package com.davromalc.cart
 
+import com.davromalc.cart.domain.Cart
 import com.davromalc.cart.domain.Item
+import com.davromalc.cart.dto.CartDTO
 import com.davromalc.cart.repositories.CartRepository
 import org.springframework.web.reactive.function.server.ServerRequest
 import org.springframework.web.reactive.function.server.ServerResponse
-import org.springframework.web.reactive.function.server.ServerResponse.notFound
-import org.springframework.web.reactive.function.server.ServerResponse.ok
+import org.springframework.web.reactive.function.server.ServerResponse.*
+import org.springframework.web.reactive.function.server.body
 import reactor.core.publisher.Mono
+import reactor.core.publisher.toMono
 
 class CartHandler(private val cartRepository: CartRepository) {
 
@@ -21,6 +24,15 @@ class CartHandler(private val cartRepository: CartRepository) {
                 }.switchIfEmpty(notFound().build())
     }
 
+    fun create(request: ServerRequest): Mono<ServerResponse>{
+
+       return request.bodyToMono(CartDTO::class.java).flatMap {
+           cartRepository.save(map(it)).flatMap(ok()::syncBody)
+       }.switchIfEmpty(badRequest().build())
+
+    }
+
+    fun map(cartDTO: CartDTO) = Cart(cartDTO.userId, cartDTO.items)
 
     fun findOne(request: ServerRequest): Mono<ServerResponse> {
         return cartRepository.findById(request.pathVariable("id"))
