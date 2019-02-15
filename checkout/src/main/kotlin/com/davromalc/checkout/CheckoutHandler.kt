@@ -5,6 +5,7 @@ import com.davromalc.checkout.model.Cart
 import com.davromalc.checkout.model.Checkout
 import com.davromalc.checkout.model.Item
 import com.davromalc.checkout.repository.CheckoutRepository
+import org.springframework.amqp.rabbit.core.RabbitTemplate
 import org.springframework.web.client.RestTemplate
 import org.springframework.web.reactive.function.server.ServerRequest
 import org.springframework.web.reactive.function.server.ServerResponse
@@ -13,12 +14,15 @@ import reactor.core.publisher.Mono
 import java.math.BigDecimal
 import java.util.function.Consumer
 
-class CheckoutHandler(private val checkoutRepository: CheckoutRepository) {
+class CheckoutHandler(private val checkoutRepository: CheckoutRepository, private val rabbittemplate: RabbitTemplate) {
 
     fun execute(request: ServerRequest) : Mono<ServerResponse> {
 
         val parameters = mapOf("id" to request.pathVariable("cartId"))
         val cart = RestTemplate().getForEntity("http://localhost:8080/api/cart/{id}", Cart::class.java, parameters).body
+
+        val message = "Total prize: " + calculatePrize(cart!!.items)
+        rabbittemplate.convertAndSend("orders", message)
 
         return ok().syncBody(calculatePrize(cart!!.items))
     }
