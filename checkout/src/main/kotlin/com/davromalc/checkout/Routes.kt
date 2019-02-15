@@ -7,5 +7,6 @@ fun routes(checkoutHandler: CheckoutHandler) =
             ("/api/checkout" and accept(APPLICATION_JSON))
                     .nest {
                         POST("/{cartId}", checkoutHandler::execute)
+                        POST("/", checkoutHandler::create)
                     }
         }
