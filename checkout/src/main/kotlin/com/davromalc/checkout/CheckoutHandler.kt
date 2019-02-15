@@ -14,7 +14,7 @@ import reactor.core.publisher.Mono
 import java.math.BigDecimal
 import java.util.function.Consumer
 
-class CheckoutHandler(private val checkoutRepository: CheckoutRepository, private val rabbittemplate: RabbitTemplate) {
+class CheckoutHandler(private val checkoutRepository: CheckoutRepository, private val rabbitTemplate: RabbitTemplate) {
 
     fun execute(request: ServerRequest) : Mono<ServerResponse> {
 
@@ -22,7 +22,7 @@ class CheckoutHandler(private val checkoutRepository: CheckoutRepository, privat
         val cart = RestTemplate().getForEntity("http://localhost:8080/api/cart/{id}", Cart::class.java, parameters).body
 
         val message = "Total prize: " + calculatePrize(cart!!.items)
-        rabbittemplate.convertAndSend("orders", message)
+        rabbitTemplate.convertAndSend("orders", message)
 
         return ok().syncBody(calculatePrize(cart!!.items))
     }
