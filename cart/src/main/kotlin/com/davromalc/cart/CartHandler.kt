@@ -7,9 +7,7 @@ import com.davromalc.cart.repositories.CartRepository
 import org.springframework.web.reactive.function.server.ServerRequest
 import org.springframework.web.reactive.function.server.ServerResponse
 import org.springframework.web.reactive.function.server.ServerResponse.*
-import org.springframework.web.reactive.function.server.body
 import reactor.core.publisher.Mono
-import reactor.core.publisher.toMono
 
 class CartHandler(private val cartRepository: CartRepository) {
 

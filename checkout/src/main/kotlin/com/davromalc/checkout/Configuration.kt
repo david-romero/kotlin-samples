@@ -15,7 +15,7 @@ val appConfig = configuration {
     }
     r2dbcPostgresql()
     server {
-        port = 8080
+        port = 8081
         codecs {
             jackson()
         }
