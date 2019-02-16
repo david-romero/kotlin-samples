@@ -6,10 +6,9 @@ import com.davromalc.order.model.OrderStatus
 import com.davromalc.order.repositories.OrderRepository
 import org.springframework.context.ApplicationEventPublisher
 
-class OrderHandler(private val orderRepository: OrderRepository,
-                   private val applicationEventPublisher: ApplicationEventPublisher,
-                   private val paymentHandler: PaymentHandler) {
-
+class OrderHandler(val orderRepository: OrderRepository,
+                   val applicationEventPublisher: ApplicationEventPublisher,
+                   val paymentHandler: PaymentHandler) {
 
     fun create(newOrder: Order) {
         val persistedOrder = orderRepository.save(newOrder)
